@@ -1,3 +1,4 @@
+import { IContextType } from "@/types";
 import { useContext, createContext, useEffect, useState } from "react";
 
 export const INITIAL_USER = {
@@ -20,8 +21,8 @@ const INITIAL_STATE = {
 
 const AuthContex = createContext<IContextType>(INITIAL_STATE);
 
-const AuthContex = () => {
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return <div>AuthContex</div>;
-};
+};                                                                              
 
 export default AuthContex;
