@@ -2,6 +2,7 @@ import { ID } from "appwrite";
 
 import { INewUser } from "@/types";
 import { account, appwriteConfig, avatars, databases } from "./config";
+import { Query } from "@tanstack/react-query";
 
 export async function createUserAccount(user: INewUser) {
   try {
@@ -59,5 +60,24 @@ export async function signInAccount(user: { email: string; password: string }) {
     return session;
   } catch (err) {
     console.log("error nii", err);
+  }
+}
+
+export async function getCurrentUser() {
+  try {
+    const currentAccount = await account.get();
+
+    if (!currentAccount) throw Error;
+
+    const currentUser = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      [Query.equal("accountId", currentAccount.$id)]
+    );
+
+    if (!currentUser) throw Error;
+    return currentUser.documents[0];
+  } catch (err) {
+    console.log(err);
   }
 }
